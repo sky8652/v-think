@@ -30,7 +30,7 @@ gulp.task('imgMin', () => {
         }))
         .pipe(gulp.dest('./www/static/img'));
 });
-gulp.task('lessPro', ['imgMin'], function () {
+gulp.task('lessPro', ['cpBS', 'cpFont', 'imgMin'], function () {
   return gulp.src('./less/**/*.less')
       .pipe(less({
         path: [path.join(__dirname, 'less', 'includes')]
@@ -41,13 +41,20 @@ gulp.task('lessPro', ['imgMin'], function () {
       .pipe(sourcemaps.write('./maps'))
       .pipe(gulp.dest('./www/static/css'));
 });
-
+gulp.task('cpBS', function () {
+  return gulp.src(['./lib/css/bootstrap.min.css'])
+      .pipe(gulp.dest('./www/static/css'));
+});
+gulp.task('cpFont', function () {
+  return gulp.src(['./lib/fonts/*'])
+      .pipe(gulp.dest('./www/static/fonts/'))
+});
 // 开发环境编译less，并监听less改变
 // gulp.task('htmlDev', ['clean'], function () {
 //   return gulp.src(['./view/**/*.html'])
 //       .pipe(gulp.dest('./www/static'));
 // });
-gulp.task('lessDev', ['imgMin'], function () {
+gulp.task('lessDev', ['cpBS', 'cpFont', 'imgMin'], function () {
   return gulp.src('./less/**/*.less')
       .pipe(plumber())
       .pipe(less({
